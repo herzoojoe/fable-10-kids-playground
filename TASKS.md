@@ -42,7 +42,7 @@
   - 완료 기준: `Stars.showEnd(earned, onAgain)` 가 SPEC 5장의 끝 화면(🎉, 「다 했어요!」, 「이번 놀이에서 별 ⭐ N개를 모았어요」, 「한 번 더 하기」, 「🏠 처음으로」 → `../index.html`)을 띄운다. 별을 지우는 버튼은 없다.
   - 완료 기준: 공통 화면과 끝 화면은 버튼을 누르기 전에는 저절로 넘어가지 않는다 (`setTimeout` 으로 넘어가는 코드 없음).
 
-- [ ] **T05 첫 화면 (index.html)**
+- [x] **T05 첫 화면 (index.html)**
   - 완료 기준: 제목 「꼬마 놀이터 🎈」, 「모은 별 ⭐ × N」, 게임 버튼 4개(2×2, 버튼마다 큰 이모지 + 이름)가 SPEC 7장대로 있다.
   - 완료 기준: 버튼 4개의 연결 주소가 `games/word.html`, `games/math.html`, `games/clock.html`, `games/match.html` 이다.
   - 완료 기준: viewport 1024×768에서 스크롤 없이 한 화면에 다 보인다.
