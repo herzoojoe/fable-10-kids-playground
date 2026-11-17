@@ -297,6 +297,8 @@ body {
   border-radius: 24px;
   background: var(--sky-strong);   /* 뒷면: 단색 바탕 */
 }
+/* 카드 속 그림 크기: 카드 크기에 맞춤 (휴대폰용 버튼 글자 규칙보다 우선) */
+.board .card { font-size: calc(var(--card-size) * 0.68); line-height: 1; }
 .card.is-open { background: var(--card); border-color: var(--sky-strong); }
 .card.is-found { background: var(--mint); border-color: var(--green); }
 .card.is-open .card-face { animation: card-turn 0.25s ease-out; }
