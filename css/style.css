@@ -243,6 +243,12 @@ body {
 }
 .count-group span { width: 60px; text-align: center; }
 .count-group .faded { opacity: 0.3; }   /* 빼는 만큼 흐리게 */
+.count-group.is-empty {     /* 0개일 때: 빈 상자 */
+  width: 64px;
+  height: 64px;
+  border: 4px dashed var(--sky-strong);
+  border-radius: 16px;
+}
 .count-sign { font-size: 56px; font-weight: 800; color: var(--soft-ink); }
 
 /* ---------- 시계 읽기 ---------- */
