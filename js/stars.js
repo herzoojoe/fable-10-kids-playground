@@ -68,12 +68,15 @@
     overlay.setAttribute('role', 'dialog');
     overlay.setAttribute('aria-modal', 'true');
 
-    var panel = el('div', 'panel');
+    // 끝 화면은 가운데 큰 상자, 나머지는 문제(그림·시계)를 가리지 않도록 위쪽 띠 모양
+    var panel = el('div', 'panel' + (parts.center ? '' : ' panel-bar'));
     var emoji = el('div', 'panel-emoji' + (parts.pop ? ' star-pop' : ''), parts.emoji);
     emoji.setAttribute('aria-hidden', 'true');
     panel.appendChild(emoji);
-    if (parts.title) panel.appendChild(el('p', 'panel-title', parts.title));
-    if (parts.text) panel.appendChild(el('p', 'panel-text', parts.text));
+    var body = el('div', 'panel-body');
+    if (parts.title) body.appendChild(el('p', 'panel-title', parts.title));
+    if (parts.text) body.appendChild(el('p', 'panel-text', parts.text));
+    panel.appendChild(body);
 
     var row = el('div', 'btn-row');
     var first = null;
@@ -131,7 +134,8 @@
   function showRetry(onRetry) {
     return openOverlay({
       emoji: '🤗',
-      title: '괜찮아요! 한 번 더 해 볼까요?',
+      title: '괜찮아요!',
+      text: '한 번 더 해 볼까요?',
       buttons: [{ label: '다시 해 볼게요', onClick: onRetry }]
     });
   }
@@ -139,7 +143,8 @@
   function showAnswer(answerText, onNext) {
     return openOverlay({
       emoji: '🙂',
-      title: '같이 볼까요? 정답은 ' + copula(answerText) + '.',
+      title: '같이 볼까요?',
+      text: '정답은 ' + copula(answerText) + '.',
       buttons: [{ label: '다음 ▶', onClick: onNext }]
     });
   }

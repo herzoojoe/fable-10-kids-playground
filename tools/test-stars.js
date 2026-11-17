@@ -85,7 +85,7 @@ function ok(cond, msg) { console.log((cond ? '[통과] ' : '[실패] ') + msg); 
   ok(await page.evaluate(() => Stars.count()) === before && (await page.evaluate(() => window.__next[0])) === false, '두 번 틀린 문제는 별 없음, onNext(false)');
 
   // 받침 맞춤
-  const j = await page.evaluate(() => { const r = []; ['3시 30분', '3시', '5개', '오이'].forEach(a => { Stars.showAnswer(a, () => {}); r.push(document.querySelector('#stars-overlay .panel-title').textContent); }); return r; });
+  const j = await page.evaluate(() => { const r = []; ['3시 30분', '3시', '5개', '오이'].forEach(a => { Stars.showAnswer(a, () => {}); r.push(document.querySelector('#stars-overlay .panel-body').innerText.replace(/\s+/g, ' ').trim()); }); return r; });
   ok(j[0].endsWith('30분이에요.') && j[1].endsWith('3시예요.') && j[2].endsWith('5개예요.'), '정답 문구 받침 맞춤: ' + j.join(' / '));
 
   // 끝 화면
