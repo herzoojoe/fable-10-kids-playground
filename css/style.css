@@ -1,1 +1,315 @@
-/* 꼬마 놀이터 공통 모양 */
+/* 꼬마 놀이터 공통 모양
+   - 태블릿 가로 화면(1024x768, 1280x800, 1024x690)에서 스크롤 없이 보이도록 만듦
+   - 본문 28px 이상, 문제 글자 48px 이상, 버튼 글자 32px 이상
+   - 버튼은 가로·세로 80px 이상, 버튼 사이 간격 16px 이상
+   - 다시 해 보기 표시에는 빨간색과 가위표를 쓰지 않음 */
+
+:root {
+  --bg: #fff8ec;
+  --ink: #3d3a4b;
+  --soft-ink: #6b6680;
+  --card: #ffffff;
+  --sky: #cfe8ff;
+  --sky-strong: #8fbcf5;
+  --mint: #d6f5e3;
+  --green: #43b26b;        /* 맞혔을 때 테두리 */
+  --yellow: #ffc21a;       /* 정답 알려 줄 때 테두리 */
+  --yellow-glow: #ffe48a;
+  --lilac: #e9defc;
+  --peach: #ffe1c7;
+  --shadow: 0 6px 0 rgba(61, 58, 75, 0.12);
+  --gap: 24px;             /* 버튼 사이 간격 (16px 이상) */
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+  font-size: 28px;          /* 본문 최소 28px */
+  line-height: 1.3;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- 버튼 ---------- */
+.btn {
+  font-family: inherit;
+  font-size: 32px;          /* 버튼 글자 최소 32px */
+  font-weight: 700;
+  min-width: 80px;          /* 버튼 최소 80x80px */
+  min-height: 80px;
+  padding: 0 28px;
+  border: 5px solid transparent;
+  border-radius: 24px;
+  background: var(--sky);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 0.1s;
+}
+.btn:active { transform: translateY(3px); box-shadow: 0 3px 0 rgba(61, 58, 75, 0.12); }
+.btn:focus-visible { outline: 4px solid var(--sky-strong); outline-offset: 4px; }
+
+.btn-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--gap);          /* 버튼 간격 16px 이상 */
+}
+
+/* ---------- 게임 화면 위쪽 줄 ---------- */
+.topbar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 20px;
+}
+.home-btn { justify-self: start; background: var(--peach); }
+.progress {
+  font-size: 36px;
+  font-weight: 800;
+  background: var(--card);
+  border-radius: 999px;
+  padding: 6px 28px;
+  box-shadow: var(--shadow);
+  white-space: nowrap;
+}
+.my-stars {
+  justify-self: end;
+  font-size: 32px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 12px;
+  padding: 0 20px 20px;
+}
+
+.guide {                    /* 안내 문구 */
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--soft-ink);
+  margin: 0;
+  text-align: center;
+}
+
+.question {                 /* 문제 글자 최소 48px */
+  font-size: 64px;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1.1;
+}
+
+/* ---------- 보기 버튼 ---------- */
+.choice {
+  font-size: 48px;
+  min-width: 220px;
+  min-height: 110px;
+  background: var(--card);
+  border-color: var(--sky-strong);
+}
+.choice.is-correct {        /* 맞혔을 때: 초록 테두리 */
+  border-color: var(--green);
+  border-width: 8px;
+  background: var(--mint);
+}
+.choice.is-dim {            /* 한 번 고른 보기: 흐리게, 다시 누를 수 없음 */
+  opacity: 0.35;
+  pointer-events: none;
+}
+.choice.is-answer {         /* 정답 알려 주기: 노란 테두리 */
+  border-color: var(--yellow);
+  border-width: 8px;
+  box-shadow: 0 0 0 8px var(--yellow-glow);
+}
+
+/* ---------- 공통 상자 (맞혔을 때 / 다시 해 보기 / 정답 알려 주기 / 끝) ---------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 96px;
+  /* 뒤쪽 보기 버튼(초록·노란 테두리)이 보이도록 반투명 */
+  background: rgba(255, 248, 236, 0.45);
+}
+.overlay.is-center { align-items: center; padding-top: 0; background: rgba(255, 248, 236, 0.85); }
+
+.panel {
+  background: var(--card);
+  border-radius: 36px;
+  border: 6px solid var(--lilac);
+  box-shadow: 0 12px 0 rgba(61, 58, 75, 0.12);
+  padding: 20px 48px 28px;
+  text-align: center;
+  min-width: 520px;
+  max-width: 90vw;
+}
+.panel-emoji { font-size: 96px; line-height: 1.1; display: inline-block; }
+.panel-title { font-size: 44px; font-weight: 800; margin: 6px 0 0; }
+.panel-text { font-size: 32px; margin: 6px 0 18px; }
+.panel .btn { background: var(--mint); min-width: 220px; }
+.panel .btn.home-link { background: var(--peach); }
+
+/* 별이 나타날 때 짧게 커졌다 작아지는 움직임 (1초 이내) */
+@keyframes star-pop {
+  0%   { transform: scale(0.3); }
+  55%  { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+.star-pop { animation: star-pop 0.6s ease-out; }
+
+/* ---------- 첫 화면 ---------- */
+.home-page {
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+.home-title { font-size: 64px; font-weight: 800; margin: 0; }
+.total-stars {
+  font-size: 44px;
+  font-weight: 800;
+  background: var(--card);
+  border-radius: 999px;
+  padding: 8px 40px;
+  box-shadow: var(--shadow);
+}
+.menu {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(300px, 400px));
+  gap: 28px;
+}
+.menu-btn {
+  flex-direction: column;
+  gap: 4px;
+  min-height: 190px;
+  font-size: 40px;
+  border-radius: 32px;
+}
+.menu-emoji { font-size: 80px; line-height: 1; }
+.menu-btn:nth-child(1) { background: var(--sky); }
+.menu-btn:nth-child(2) { background: var(--mint); }
+.menu-btn:nth-child(3) { background: var(--peach); }
+.menu-btn:nth-child(4) { background: var(--lilac); }
+
+/* ---------- 낱말 맞추기 ---------- */
+.picture { font-size: 200px; line-height: 1.05; }
+
+/* ---------- 더하기 빼기 ---------- */
+.counters {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  min-height: 120px;
+}
+.count-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 300px;          /* 한 줄에 5개씩 */
+  font-size: 48px;
+  line-height: 1.15;
+}
+.count-group span { width: 60px; text-align: center; }
+.count-group .faded { opacity: 0.3; }   /* 빼는 만큼 흐리게 */
+.count-sign { font-size: 56px; font-weight: 800; color: var(--soft-ink); }
+
+/* ---------- 시계 읽기 ---------- */
+.clock {
+  width: 54vh;               /* 시계 지름: 화면 높이의 절반 이상 */
+  height: 54vh;
+  min-width: 300px;
+  min-height: 300px;
+}
+.clock svg { width: 100%; height: 100%; display: block; }
+.clock-choices .choice { min-width: 260px; font-size: 44px; }
+
+/* ---------- 같은 그림 찾기 ---------- */
+.board {
+  --card-size: clamp(120px, calc((100vh - 290px) / 3), 160px);
+  display: grid;
+  grid-template-columns: repeat(4, var(--card-size));
+  grid-auto-rows: var(--card-size);
+  gap: 18px;
+}
+.card {
+  position: relative;
+  width: var(--card-size);
+  height: var(--card-size);
+  min-width: 120px;          /* 카드 한 장 최소 120x120px */
+  min-height: 120px;
+  padding: 0;
+  font-size: 72px;
+  border-radius: 24px;
+  background: var(--sky-strong);   /* 뒷면: 단색 바탕 */
+}
+.card.is-open { background: var(--card); border-color: var(--sky-strong); }
+.card.is-found { background: var(--mint); border-color: var(--green); }
+.card.is-open .card-face { animation: card-turn 0.25s ease-out; }
+@keyframes card-turn {
+  from { transform: scaleX(0.2); }
+  to   { transform: scaleX(1); }
+}
+.card.is-found { animation: sparkle 0.8s ease-out; }
+@keyframes sparkle {
+  0%   { box-shadow: 0 0 0 0 var(--yellow-glow); }
+  50%  { box-shadow: 0 0 0 14px var(--yellow-glow); }
+  100% { box-shadow: var(--shadow); }
+}
+.card-star {
+  position: absolute;
+  top: -14px;
+  right: -10px;
+  font-size: 40px;
+  line-height: 1;
+}
+.match-message {
+  font-size: 32px;
+  font-weight: 700;
+  min-height: 52px;
+  margin: 0;
+  padding: 4px 28px;
+  border-radius: 999px;
+  background: var(--lilac);
+  visibility: hidden;
+}
+.match-message.is-show { visibility: visible; }
+
+/* 움직임 줄이기를 켠 기기에서는 애니메이션을 끔 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .star-pop { animation: none; }
+}
