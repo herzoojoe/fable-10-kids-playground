@@ -1,4 +1,4 @@
-// 보기 3개짜리 게임(낱말·더하기 빼기·시계)을 브라우저에서 끝까지 해 보는 공통 점검
+// 보기 3개짜리 게임(영어 단어·계산하기·시계)을 브라우저에서 끝까지 해 보는 공통 점검
 const path = require('path');
 const { inspect, report } = require('./layout');
 module.exports = async function playFlow({ browser, file, total, guideText, answerOf, answerSay, ok, shotName }) {

@@ -14,11 +14,11 @@ let fails = 0; const ok = (c, m) => { console.log((c ? '[통과] ' : '[실패] '
     stars: document.querySelector('.total-stars').innerText,
     links: [...document.querySelectorAll('.menu a')].map(a => [a.getAttribute('href'), a.innerText.replace(/\s+/g, ' ').trim(), a.getBoundingClientRect().x | 0, a.getBoundingClientRect().y | 0, parseFloat(getComputedStyle(a.querySelector('.menu-emoji')).fontSize)]),
   }));
-  ok(info.title === '꼬마 놀이터 🎈', '제목: ' + info.title);
+  ok(info.title === '은호의 놀이터 🎈', '제목: ' + info.title);
   ok(info.stars === '모은 별 ⭐ × 12', '모은 별: ' + info.stars);
   const hrefs = info.links.map(l => l[0]).join(',');
   ok(hrefs === 'games/word.html,games/math.html,games/clock.html,games/match.html', '연결 주소: ' + hrefs);
-  ok(info.links.map(l => l[1]).join('/') === '🔤 낱말 맞추기/➕ 더하기 빼기/🕐 시계 읽기/🃏 같은 그림 찾기', '버튼 이모지+이름: ' + info.links.map(l => l[1]).join('/'));
+  ok(info.links.map(l => l[1]).join('/') === '🔤 영어 단어 맞추기/🧮 계산하기/🕐 시계 읽기/🃏 같은 그림 찾기', '버튼 이모지+이름: ' + info.links.map(l => l[1]).join('/'));
   const xs = new Set(info.links.map(l => l[2])), ys = new Set(info.links.map(l => l[3]));
   ok(xs.size === 2 && ys.size === 2, '2x2 배치: ' + JSON.stringify(info.links.map(l => [l[2], l[3]])));
   ok(info.links.every(l => l[4] >= 64), '큰 이모지 (' + info.links[0][4] + 'px)');

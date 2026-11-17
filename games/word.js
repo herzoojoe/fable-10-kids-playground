@@ -1,17 +1,18 @@
-/* 낱말 맞추기 — 그림을 보고 맞는 낱말을 고르는 놀이
-   낱말은 모두 받침이 없습니다: (글자 코드 - 0xAC00) % 28 === 0 */
+/* 영어 단어 맞추기 — 그림을 보고 맞는 영어 단어를 고르는 놀이
+   [그림, 영어 단어, 한국어로 읽을 때 끝소리에 받침이 있는지]
+   세 번째 값은 「정답은 lion이에요 / cow예요」처럼 뒤에 붙는 말을 고르는 데만 씀 */
 var WordGame = (function () {
   var WORDS = [
-    ['🦋', '나비'], ['🦁', '사자'], ['🥒', '오이'],
-    ['🥛', '우유'], ['🍌', '바나나'], ['🍅', '토마토'],
-    ['🚂', '기차'], ['🧢', '모자'], ['🍇', '포도'],
-    ['🦛', '하마'], ['🐸', '개구리'], ['🐋', '고래'],
-    ['🍆', '가지'], ['🕐', '시계'], ['🐘', '코끼리'],
-    ['🍕', '피자'], ['🍐', '배'], ['🪑', '의자'],
-    ['🕷️', '거미'], ['🚌', '버스'], ['🦆', '오리'],
-    ['🍎', '사과'], ['🦊', '여우'], ['🦝', '너구리'],
-    ['👞', '구두'], ['🧀', '치즈'], ['🍠', '고구마'],
-    ['🥝', '키위'], ['🐄', '소']
+    ['🦋', 'butterfly', false], ['🦁', 'lion', true], ['🥒', 'cucumber', false],
+    ['🥛', 'milk', false], ['🍌', 'banana', false], ['🍅', 'tomato', false],
+    ['🚂', 'train', true], ['🧢', 'cap', true], ['🍇', 'grapes', false],
+    ['🦛', 'hippo', false], ['🐸', 'frog', false], ['🐋', 'whale', true],
+    ['🍆', 'eggplant', false], ['🕐', 'clock', true], ['🐘', 'elephant', false],
+    ['🍕', 'pizza', false], ['🍐', 'pear', false], ['🪑', 'chair', false],
+    ['🕷️', 'spider', false], ['🚌', 'bus', false], ['🦆', 'duck', true],
+    ['🍎', 'apple', true], ['🦊', 'fox', false], ['🦝', 'raccoon', true],
+    ['👞', 'shoe', false], ['🧀', 'cheese', false], ['🍠', 'sweet potato', false],
+    ['🥝', 'kiwi', false], ['🐄', 'cow', false], ['🦀', 'crab', true]
   ];
   var TOTAL = 10;
 
@@ -25,12 +26,16 @@ var WordGame = (function () {
   }
 
   // 한 판(10문제)을 만듦: [{ emoji, answer, options:[3개] }]
+  // 한 판 안에서는 정답과 보기를 통틀어 같은 단어가 두 번 나오지 않음
+  // (10문제 × 보기 3개 = 30칸, 단어 30개를 섞어 한 번씩만 씀)
   function makeRound() {
-    var picked = shuffle(WORDS).slice(0, TOTAL);      // 같은 그림이 두 번 나오지 않음
-    return picked.map(function (item) {
-      var others = shuffle(WORDS.filter(function (w) { return w[1] !== item[1]; }))
-        .slice(0, 2).map(function (w) { return w[1]; });
-      return { emoji: item[0], answer: item[1], options: shuffle([item[1]].concat(others)) };
+    var mixed = shuffle(WORDS);
+    var picked = mixed.slice(0, TOTAL);              // 정답 10개
+    var rest = mixed.slice(TOTAL);                    // 나머지는 다른 보기로 2개씩
+    return picked.map(function (item, i) {
+      var others = rest.slice(i * 2, i * 2 + 2).map(function (w) { return w[1]; });
+      return { emoji: item[0], answer: item[1], answerHasFinal: item[2],
+               options: shuffle([item[1]].concat(others)) };
     });
   }
 
@@ -60,7 +65,7 @@ var WordGame = (function () {
 
       var guide = document.createElement('p');
       guide.className = 'guide';
-      guide.textContent = '그림에 맞는 낱말을 눌러 보세요';
+      guide.textContent = '그림에 맞는 영어 단어를 눌러 보세요';
       stage.appendChild(guide);
 
       var pic = document.createElement('div');
@@ -87,6 +92,7 @@ var WordGame = (function () {
             isCorrect: q.options[i] === q.answer,
             correctButton: correctButton,
             answerText: q.answer,
+            answerHasFinal: q.answerHasFinal,
             state: state,
             onNext: next
           });

@@ -106,12 +106,14 @@
   /* 받침이 있으면 '이에요', 없으면 '예요' (숫자는 읽는 소리 기준) */
   var DIGIT_HAS_FINAL = { '0': true, '1': true, '2': false, '3': true, '4': false,
     '5': false, '6': true, '7': true, '8': true, '9': false };
-  function copula(word) {
+  function copula(word, hasFinalGiven) {
     var s = String(word).replace(/\s+$/, '');
     var last = s.charAt(s.length - 1);
     var code = last.charCodeAt(0);
     var hasFinal;
-    if (code >= 0xAC00 && code <= 0xD7A3) {
+    if (typeof hasFinalGiven === 'boolean') {
+      hasFinal = hasFinalGiven;                 // 영어 단어처럼 게임이 알려 준 경우
+    } else if (code >= 0xAC00 && code <= 0xD7A3) {
       hasFinal = (code - 0xAC00) % 28 !== 0;
     } else if (DIGIT_HAS_FINAL.hasOwnProperty(last)) {
       hasFinal = /10$/.test(s) ? true : DIGIT_HAS_FINAL[last];   // 10 = 십
@@ -140,11 +142,11 @@
     });
   }
 
-  function showAnswer(answerText, onNext) {
+  function showAnswer(answerText, onNext, hasFinal) {
     return openOverlay({
       emoji: '🙂',
       title: '같이 볼까요?',
-      text: '정답은 ' + copula(answerText) + '.',
+      text: '정답은 ' + copula(answerText, hasFinal) + '.',
       buttons: [{ label: '다음 ▶', onClick: onNext }]
     });
   }
@@ -161,8 +163,8 @@
     });
   }
 
-  /* 보기 하나를 눌렀을 때의 공통 흐름 (낱말·더하기 빼기·시계 게임이 함께 씀)
-     opt = { button, isCorrect, correctButton, answerText, state, onNext }
+  /* 보기 하나를 눌렀을 때의 공통 흐름 (영어 단어·계산하기·시계 게임이 함께 씀)
+     opt = { button, isCorrect, correctButton, answerText, answerHasFinal(없어도 됨), state, onNext }
      state 는 문제마다 새로 만드는 {} 이며, 몇 번 다시 했는지 기억합니다.
      onNext(gotStar) — 「다음 ▶」을 누르면 실행. 별을 받았으면 true */
   function choose(opt) {
@@ -183,7 +185,7 @@
     } else {
       state.done = true;
       opt.correctButton.classList.add('is-answer');
-      showAnswer(opt.answerText, function () { opt.onNext(false); });
+      showAnswer(opt.answerText, function () { opt.onNext(false); }, opt.answerHasFinal);
     }
   }
 

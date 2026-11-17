@@ -239,10 +239,10 @@ body {
 .menu-btn:nth-child(3) { background: var(--peach); }
 .menu-btn:nth-child(4) { background: var(--lilac); }
 
-/* ---------- 낱말 맞추기 ---------- */
+/* ---------- 영어 단어 맞추기 ---------- */
 .picture { font-size: 200px; line-height: 1.05; }
 
-/* ---------- 더하기 빼기 ---------- */
+/* ---------- 계산하기 ---------- */
 .counters {
   display: flex;
   align-items: center;
@@ -337,3 +337,33 @@ body {
   }
   .star-pop { animation: none; }
 }
+
+/* 계산하기 — 십 모형 (10개짜리 막대 + 낱개 네모) */
+.tens-blocks {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 128px;
+}
+.ten-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.ten-bar i, .ones i {
+  display: block;
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+}
+.ten-bar i { background: var(--sky-strong); }
+.ones {
+  display: flex;
+  flex-direction: column-reverse;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 2px;
+  height: 128px;
+  margin-left: 4px;
+}
+.ones i { background: var(--yellow); }
