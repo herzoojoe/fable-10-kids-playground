@@ -89,6 +89,24 @@ def main():
                            r"\bfirebrick\b", r"\bdarkred\b", r"\bindianred\b",
                            "✕", "✖", "❌", "❎"], regex=True))
 
+    check("광고·다른 사이트 끼워 넣기·입력 받기(<iframe, <embed, <object, window.open, "
+          "contenteditable, prompt(, ads) 없음",
+          find_all(files, [r"<iframe", r"<embed", r"<object", r"window\.open",
+                           r"contenteditable", r"\bprompt\(", r"\bads", r"광고",
+                           r"//[a-z0-9-]+\.[a-z]{2,}"], regex=True))
+
+    # href, src 가 모두 저장소 안의 실제 파일을 가리키는지
+    broken = []
+    for p in files:
+        if not p.endswith(".html"):
+            continue
+        for i, line in enumerate(read(p).splitlines(), 1):
+            for m in re.finditer(r'(?:href|src)="([^"]+)"', line):
+                target = os.path.normpath(os.path.join(os.path.dirname(p), m.group(1)))
+                if not os.path.isfile(target):
+                    broken.append((os.path.relpath(p, ROOT), i, m.group(1)))
+    check("모든 링크(href, src)가 사이트 안의 실제 파일을 가리킴", broken)
+
     fails = 0
     print("꼬마 놀이터 점검 (검사한 사이트 파일 %d개)" % len(files))
     print("-" * 50)
