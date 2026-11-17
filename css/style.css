@@ -367,3 +367,108 @@ body {
   margin-left: 4px;
 }
 .ones i { background: var(--yellow); }
+
+/* ---------- 휴대폰 화면 ----------
+   태블릿 가로 화면이 기본이고, 아래는 화면이 작은 휴대폰에서만 적용됩니다.
+   휴대폰에서는 글자·버튼을 화면에 맞게 줄입니다 (누르는 버튼은 높이 56px 이상). */
+
+/* 휴대폰 세로 화면 */
+@media (max-width: 600px) {
+  html, body { font-size: 22px; }
+  .btn { font-size: 24px; min-height: 64px; padding: 0 18px; border-radius: 18px; }
+  .topbar { padding: 8px 10px; gap: 6px; grid-template-columns: auto 1fr auto; }
+  .progress { justify-self: center; }
+  .home-btn { font-size: 20px; min-height: 56px; min-width: 0; padding: 0 12px; white-space: nowrap; }
+  .progress { font-size: 20px; padding: 4px 12px; }
+  .my-stars { font-size: 20px; }
+  .stage { padding: 0 12px 16px; gap: 10px; }
+  .guide { font-size: 22px; }
+  .question { font-size: 48px; }
+  .choice { font-size: 32px; min-width: 0; width: min(80vw, 320px); min-height: 72px; }
+  .clock-choices .choice { min-width: 0; font-size: 30px; }
+
+  .home-page { padding: 16px 12px; gap: 16px; }
+  .home-title { font-size: 40px; text-align: center; }
+  .total-stars { font-size: 26px; padding: 6px 24px; }
+  .menu { grid-template-columns: repeat(2, 1fr); width: 100%; gap: 14px; }
+  .menu-btn { min-height: 140px; font-size: 22px; padding: 0 8px; text-align: center; word-break: keep-all; }
+  .menu-emoji { font-size: 56px; }
+
+  .picture { font-size: 140px; }
+  .clock { width: min(84vw, 54vh); height: min(84vw, 54vh); min-width: 0; min-height: 0; }
+  .board {
+    --card-size: calc((100vw - 24px - 30px) / 4);
+    gap: 10px;
+  }
+  .card { min-width: 0; min-height: 0; border-radius: 16px; }
+  .card-star { font-size: 26px; top: -10px; right: -6px; }
+  .match-message { font-size: 20px; min-height: 36px; padding: 4px 16px; text-align: center; }
+
+  .tens-blocks { gap: 4px; height: 98px; }
+  .ones { height: 98px; margin-left: 2px; }
+  .ten-bar i, .ones i { width: 8px; height: 8px; }
+  .counters { gap: 14px; min-height: 0; }
+  .count-sign { font-size: 40px; }
+
+  .panel { min-width: 0; padding: 16px 20px 20px; border-radius: 24px; }
+  .panel-emoji { font-size: 72px; }
+  .panel-title { font-size: 32px; }
+  .panel-text { font-size: 24px; }
+  .panel .btn { min-width: 0; }
+  .panel-bar { flex-wrap: wrap; justify-content: center; gap: 8px 14px; padding: 10px 14px; }
+  .panel-bar .panel-emoji { font-size: 48px; }
+  .panel-bar .panel-title { font-size: 26px; }
+  .panel-bar .panel-text { font-size: 22px; }
+  .panel-bar .panel-body { flex: 1 1 200px; }
+}
+
+/* 휴대폰 가로 화면 (세로 높이가 낮음) */
+@media (max-height: 500px) {
+  html, body { font-size: 20px; }
+  .btn { font-size: 22px; min-height: 56px; padding: 0 16px; border-radius: 16px; }
+  .topbar { padding: 4px 12px; }
+  .home-btn { font-size: 20px; min-height: 48px; white-space: nowrap; }
+  .progress { font-size: 22px; padding: 2px 14px; }
+  .my-stars { font-size: 22px; }
+  .stage { padding: 0 12px 8px; gap: 6px; }
+  .guide { font-size: 20px; }
+  .question { font-size: 40px; }
+  .choice { font-size: 28px; min-width: 150px; min-height: 60px; }
+  .btn-row { gap: 16px; }
+  .clock-choices .choice { min-width: 150px; font-size: 26px; }
+
+  .home-page { padding: 10px 16px; gap: 10px; }
+  .home-title { font-size: 34px; }
+  .total-stars { font-size: 22px; padding: 4px 24px; }
+  .menu { grid-template-columns: repeat(4, 1fr); width: min(100%, 860px); gap: 14px; }
+  .menu-btn { min-height: 150px; font-size: 22px; padding: 0 8px; text-align: center; word-break: keep-all; }
+  .menu-emoji { font-size: 52px; }
+
+  .picture { font-size: 96px; }
+  .clock { width: 50vh; height: 50vh; min-width: 0; min-height: 0; }
+  .board {
+    --card-size: calc((100vh - 130px) / 3);
+    gap: 10px;
+  }
+  .card { min-width: 0; min-height: 0; border-radius: 14px; }
+  .card-star { font-size: 24px; top: -8px; right: -6px; }
+  .match-message { font-size: 18px; min-height: 30px; padding: 2px 16px; }
+
+  .tens-blocks { gap: 4px; height: 88px; }
+  .ones { height: 88px; margin-left: 2px; }
+  .ten-bar i, .ones i { width: 7px; height: 7px; }
+  .counters { gap: 14px; min-height: 0; }
+  .count-sign { font-size: 36px; }
+
+  .overlay.is-center { align-items: center; }
+  .panel { min-width: 0; padding: 10px 28px 14px; border-radius: 24px; }
+  .panel-emoji { font-size: 56px; }
+  .panel-title { font-size: 30px; }
+  .panel-text { font-size: 22px; }
+  .panel .btn-row { margin-top: 10px; }
+  .panel .btn { min-width: 160px; }
+  .panel-bar { padding: 6px 18px; gap: 16px; }
+  .panel-bar .panel-emoji { font-size: 44px; }
+  .panel-bar .panel-title { font-size: 26px; }
+  .panel-bar .panel-text { font-size: 22px; }
+}
