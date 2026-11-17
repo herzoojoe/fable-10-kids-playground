@@ -13,7 +13,7 @@
   - 완료 기준: 모든 HTML 파일이 `<!DOCTYPE html>`, `<html lang="ko">`, `<meta charset="utf-8">`, `<meta name="viewport" ...>` 를 가진다.
   - 완료 기준: 게임 HTML 4개가 `../css/style.css`, `../js/stars.js`, 자기 게임 `.js`를 상대 경로로, 보통 `<script src="...">` 로 불러온다.
 
-- [ ] **T02 점검 도구 만들기 (tools/)**
+- [x] **T02 점검 도구 만들기 (tools/)**
   - 완료 기준: `tools/check.sh`(또는 `tools/check.py`)를 실행하면 아래를 검사해 항목별로 통과/실패를 출력한다.
     - 사이트 파일(`index.html`, `games/`, `css/`, `js/`)에 `http://`, `https://` 가 없음
     - `type="module"`, `import `, `export `, `fetch(`, `XMLHttpRequest` 가 없음
