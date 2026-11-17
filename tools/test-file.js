@@ -23,7 +23,7 @@ async function solveOne(page, g) {
   }
   const ans = await page.evaluate((g) => {
     if (g === 'word') { const e = document.querySelector('.picture').textContent; return WordGame.WORDS.find(w => w[0] === e)[1]; }
-    if (g === 'math') { const m = document.querySelector('.question').textContent.match(/^(\d+) ([+−]) (\d+)/); return String(m[2] === '+' ? +m[1] + +m[3] : +m[1] - +m[3]); }
+    if (g === 'math') { const m = document.querySelector('.question').textContent.match(/^(\d+) ([+−×÷]) (\d+)/); const a = +m[1], b = +m[3]; return String({ '+': a + b, '−': a - b, '×': a * b, '÷': a / b }[m[2]]); }
     const svg = document.querySelector('.clock svg'); const ang = c => +svg.querySelector(c).getAttribute('transform').match(/rotate\(([\d.]+)/)[1];
     const mm = ang('.minute-hand') === 180 ? 30 : 0; let h = Math.round((ang('.hour-hand') - mm * 0.5) / 30) % 12; if (h === 0) h = 12;
     return mm ? h + '시 30분' : h + '시';

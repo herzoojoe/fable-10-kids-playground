@@ -12,7 +12,7 @@ const url = p => 'file://' + path.join(ROOT, p);
 async function answer(page, g) {
   return page.evaluate((g) => {
     if (g === 'word') { const e = document.querySelector('.picture').textContent; return WordGame.WORDS.find(w => w[0] === e)[1]; }
-    if (g === 'math') { const m = document.querySelector('.question').textContent.match(/^(\d+) ([+−]) (\d+)/); return String(m[2] === '+' ? +m[1] + +m[3] : +m[1] - +m[3]); }
+    if (g === 'math') { const m = document.querySelector('.question').textContent.match(/^(\d+) ([+−×÷]) (\d+)/); const a = +m[1], b = +m[3]; return String({ '+': a + b, '−': a - b, '×': a * b, '÷': a / b }[m[2]]); }
     const svg = document.querySelector('.clock svg'); const ang = c => +svg.querySelector(c).getAttribute('transform').match(/rotate\(([\d.]+)/)[1];
     const mm = ang('.minute-hand') === 180 ? 30 : 0; let h = Math.round((ang('.hour-hand') - mm * 0.5) / 30) % 12; if (h === 0) h = 12;
     return mm ? h + '시 30분' : h + '시';
@@ -50,7 +50,7 @@ async function panelCheck(page) {
       await page.goto(url(`games/${g}.html`)); await page.waitForTimeout(50);
       report(`[${vp}] ${g} 화면`, await inspect(page), ok2);
       await page.screenshot({ path: path.join(SHOTS, `${vp}-${n}-${g}.png`) });
-      // 한 판의 모든 문제 화면을 돌며 배치 확인 (긴 낱말, 이모지 10개 등)
+      // 한 판의 모든 문제 화면을 돌며 배치 확인 (긴 단어, 십 모형 등)
       let allGood = true, why = '';
       const total = g === 'clock' ? 8 : 10;
       for (let q = 0; q < total; q++) {
@@ -71,7 +71,7 @@ async function panelCheck(page) {
           // 노란 테두리 보기가 상자에 가리지 않는지
           const vis = await page.evaluate(() => { const b = document.querySelector('.choice.is-answer').getBoundingClientRect(); const p = document.querySelector('.panel').getBoundingClientRect(); return b.top >= p.bottom; });
           ok2(vis, `[${vp}] ${g} 노란 테두리 보기가 상자 아래에 보임`);
-          const seen = await page.evaluate(() => { const q = document.querySelector('.picture, .counters, .clock').getBoundingClientRect(); const p = document.querySelector('.panel').getBoundingClientRect(); return [Math.round(q.top), Math.round(p.bottom)]; });
+          const seen = await page.evaluate(() => { const q = document.querySelector('.picture, .counters, .clock, .question').getBoundingClientRect(); const p = document.querySelector('.panel').getBoundingClientRect(); return [Math.round(q.top), Math.round(p.bottom)]; });
           ok2(seen[0] >= seen[1] - 1, `[${vp}] ${g} 정답을 알려 줄 때 문제 그림이 상자에 가리지 않음 (그림 위 ${seen[0]} ≥ 상자 아래 ${seen[1]})`);
           report(`[${vp}] ${g} 「정답 알려 주기」 상자`, await inspect(page), ok2);
           await page.screenshot({ path: path.join(SHOTS, `${vp}-${n}-${g}-box3-answer.png`) });

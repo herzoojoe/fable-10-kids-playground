@@ -48,8 +48,14 @@ const say = n => n + ('013678'.includes(String(n).slice(-1)) ? '이에요' : '�
     const blocks = n => [Math.floor(n / 10), n % 10].join();
     const good = (op === '+' || op === '−') ? (v.groups.length === 2 && v.groups[0].join() === blocks(a) && v.groups[1].join() === blocks(b)) : v.groups.length === 0;
     if (!good || v.qfs < 48) visBad.push(JSON.stringify(v));
-    await p.evaluate(() => { document.querySelector('.choice').click(); const o = document.querySelector('#stars-overlay button'); if (o) o.click(); const o2 = document.querySelector('#stars-overlay button'); if (o2 && /다음|다시/.test(o2.textContent)) o2.click(); });
-    await p.evaluate(() => { const o = document.querySelector('#stars-overlay button'); if (o && /다음/.test(o.textContent)) o.click(); if (o && /다시/.test(o.textContent)) { o.click(); [...document.querySelectorAll('.choice')].find(b => !b.disabled).click(); const n = document.querySelector('#stars-overlay button'); if (n) n.click(); } });
+    // 정답을 눌러 다음 문제로
+    await p.evaluate(() => {
+      const m = document.querySelector('.question').textContent.match(/^(\d+) ([+−×÷]) (\d+)/);
+      const x = +m[1], y = +m[3];
+      const ans = String({ '+': x + y, '−': x - y, '×': x * y, '÷': x / y }[m[2]]);
+      [...document.querySelectorAll('.choice')].find(b => b.textContent === ans).click();
+      document.querySelector('#stars-overlay button').click();
+    });
     if (await p.evaluate(() => /한 번 더/.test(document.body.innerText))) await p.click('#stars-overlay button:has-text("한 번 더 하기")');
   }
   ok(visBad.length === 0 && seenOps.size === 4, `30문제 화면: 더하기·빼기는 십 모형 두 묶음(막대·네모 수가 맞음), 곱하기·나누기는 그림 없음, 식 글자 48px 이상 (본 계산 ${[...seenOps].join(' ')}) ` + visBad.slice(0, 3).join(' / '));
