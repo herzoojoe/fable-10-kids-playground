@@ -31,7 +31,7 @@
   - 완료 기준: 오답 표시에 빨간색 계열 색(예: `red`, `#f00`, `#ff0000`)과 ✕ 표시를 쓰지 않는다.
   - 완료 기준: 별 애니메이션은 1초 이내이고, `@media (prefers-reduced-motion: reduce)` 에서 애니메이션을 끈다.
 
-- [ ] **T04 별 스티커와 공통 화면 (js/stars.js)**
+- [x] **T04 별 스티커와 공통 화면 (js/stars.js)**
   - 완료 기준: 전역 객체는 `window.Stars` 하나이고, `add`, `count`, `showCorrect`, `showRetry`, `showAnswer`, `showEnd` 가 있다.
   - 완료 기준: `localStorage` 의 키 `kkoma-stars` 에 저장하고, 모든 `localStorage` 사용이 `try/catch` 안에 있다.
   - 완료 기준: 세 가지 공통 화면의 그림·문구·버튼이 SPEC 5장 표와 같다.
