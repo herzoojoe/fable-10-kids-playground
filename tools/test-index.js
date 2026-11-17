@@ -14,7 +14,7 @@ let fails = 0; const ok = (c, m) => { console.log((c ? '[통과] ' : '[실패] '
     stars: document.querySelector('.total-stars').innerText,
     links: [...document.querySelectorAll('.menu a')].map(a => [a.getAttribute('href'), a.innerText.replace(/\s+/g, ' ').trim(), a.getBoundingClientRect().x | 0, a.getBoundingClientRect().y | 0, parseFloat(getComputedStyle(a.querySelector('.menu-emoji')).fontSize)]),
   }));
-  ok(info.title === '은호의 놀이터 🎈', '제목: ' + info.title);
+  ok(info.title === 'Uno의 놀이터 🎈', '제목: ' + info.title);
   ok(info.stars === '모은 별 ⭐ × 12', '모은 별: ' + info.stars);
   const hrefs = info.links.map(l => l[0]).join(',');
   ok(hrefs === 'games/word.html,games/math.html,games/clock.html,games/match.html', '연결 주소: ' + hrefs);
